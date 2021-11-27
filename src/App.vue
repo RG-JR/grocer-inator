@@ -1,30 +1,63 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="mx-auto bg-dark text text-white text-center p-3 mb-5">
+    <h1>A La Carte-inator</h1>
+    <router-link to="/">Menu</router-link>
+    <router-link
+      :to="{
+        name: 'Cart',
+        query: { key: thing },
+      }"
+      class="btn btn-light m-3"
+      >Cart</router-link
+    >
   </div>
-  <router-view />
+  <router-view @take="call" />
 </template>
 
+<script>
+export default {
+  name: "App",
+
+  data() {
+    return {
+      inCart: [],
+    };
+  },
+
+  methods: {
+    call(took) {
+      this.inCart.push(took);
+    },
+  },
+
+  computed: {
+    thing: function () {
+      return this.inCart
+        .map(function (word) {
+          return JSON.stringify(word);
+        })
+        .join("<=>");
+    },
+  },
+};
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+body {
+  background-image: url("https://images.unsplash.com/photo-1592064064956-30807b590c08?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  overflow: overlay;
 }
 
-#nav {
-  padding: 30px;
+::-webkit-scrollbar {
+  width: 5px;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+::-webkit-scrollbar-thumb {
+  background-color: #2c2c2c;
+  border-radius: 100px;
 }
 </style>
